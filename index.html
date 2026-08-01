@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GEX Ladder — NQ/QQQ/NDX</title>
+<style>
+  :root{
+    --bg:#0b0e13;
+    --panel:#12161d;
+    --line:#1e2530;
+    --text:#c9d1de;
+    --dim:#5a6472;
+    --mono: 'JetBrains Mono','IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+    --disp: 'Space Grotesk','Segoe UI',sans-serif;
+    --red:#FF4558;
+    --green:#00A475;
+    --yellow:#FFEB3B;
+    --orange:#FF9800;
+    --purple:#9C27B0;
+    --blue:#4682B4;
+    --grey:#808080;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:var(--mono); min-height:100vh; padding:24px;
+  }
+  h1{
+    font-family:var(--disp); font-weight:600; font-size:20px;
+    letter-spacing:0.02em; margin:0 0 4px 0; color:#eef1f6;
+  }
+  .sub{ color:var(--dim); font-size:12px; margin-bottom:20px; }
+  .layout{ display:grid; grid-template-columns:320px 280px 1fr; gap:18px; align-items:start; }
+  @media (max-width:1200px){ .layout{ grid-template-columns:1fr; } }
+
+  .panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:16px;
+  }
+  label{ display:block; font-size:11px; color:var(--dim); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px; }
+  textarea{
+    width:100%; height:160px; background:#0e1116; color:var(--text);
+    border:1px solid var(--line); border-radius:4px; padding:10px; font-family:var(--mono);
+    font-size:11px; resize:vertical;
+  }
+  button{
+    margin-top:10px; width:100%; background:#1a2029; color:#eef1f6; border:1px solid #2a3444;
+    border-radius:4px; padding:10px; font-family:var(--mono); font-size:12px; letter-spacing:0.05em;
+    cursor:pointer; text-transform:uppercase;
+  }
+  button:hover{ background:#212a36; }
+  .status{ font-size:11px; margin-top:8px; color:var(--dim); min-height:14px; }
+  .status.ok{ color:var(--green); }
+  .status.err{ color:var(--red); }
+
+  .prices{ display:flex; gap:10px; margin-top:14px; }
+  .price-field{ flex:1; }
+  .price-field input{
+    width:100%; background:#0e1116; color:#eef1f6; border:1px solid var(--line);
+    border-radius:4px; padding:8px; font-family:var(--mono); font-size:13px;
+  }
+  .price-field span{ font-size:10px; color:var(--dim); text-transform:uppercase; }
+
+  .ladders{ }
+
+  .ladder-col h2{
+    font-family:var(--disp); font-size:14px; color:#eef1f6; margin:0 0 10px 0;
+    display:flex; justify-content:space-between; align-items:baseline;
+  }
+  .ladder-col h2 .cur{ font-size:11px; color:var(--dim); font-family:var(--mono); }
+
+  .rung{
+    display:grid; grid-template-columns:52px 1fr auto; gap:8px; align-items:center;
+    padding:6px 8px; border-radius:3px; margin-bottom:3px; font-size:11px;
+    border-left:3px solid transparent; background:#0e1116;
+  }
+  .rung.dim{ opacity:0.28; }
+  .rung .dist{ color:var(--dim); text-align:right; }
+  .rung .name{ color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .rung .px{ font-weight:600; color:#eef1f6; }
+
+  .cur-line{
+    margin:8px 0; padding:8px; text-align:center; font-size:11px; letter-spacing:0.1em;
+    color:#eef1f6; background:#161c25; border:1px dashed var(--dim); border-radius:3px;
+  }
+  .empty{ color:var(--dim); font-size:11px; padding:20px 0; text-align:center; }
+
+  .analyze-btn{
+    margin-top:14px; width:100%; background:#1a2029; color:#eef1f6; border:1px solid #2a3444;
+    border-radius:4px; padding:9px; font-family:var(--mono); font-size:11px; letter-spacing:0.03em;
+    cursor:pointer;
+  }
+  .analyze-btn:hover:not(:disabled){ background:#212a36; border-color:#3a4658; }
+  .analyze-btn:disabled{ opacity:0.35; cursor:not-allowed; }
+
+  .analysis{
+    margin-top:10px; background:#0e1116; border:1px solid var(--line); border-radius:5px;
+    padding:14px; font-family:'Segoe UI',Tahoma,sans-serif; font-size:13px; line-height:1.9;
+    direction:rtl; text-align:right; color:#dbe1ea;
+  }
+  .analysis h3{
+    margin:0 0 8px 0; font-size:13px; color:#eef1f6; border-bottom:1px solid var(--line); padding-bottom:6px;
+  }
+  .analysis p{ margin:6px 0; }
+  .analysis .tag{ font-weight:700; }
+  .analysis .tag.up{ color:var(--green); }
+  .analysis .tag.down{ color:var(--red); }
+  .analysis .tag.warn{ color:var(--orange); }
+</style>
+</head>
+<body>
+
+<h1>GEX LADDER</h1>
+<div class="sub">paste sierra chart annotation XML → nearest levels ranked by distance from live price</div>
+
+<div class="layout">
+  <div class="panel">
+    <label>XML source</label>
+    <textarea id="xmlInput" placeholder="paste the full ArrayOfUserAnnotation XML here..."></textarea>
+    <button onclick="parseXML()">Parse levels</button>
+    <button onclick="fetchAutoGEX()" style="margin-top:6px;background:#1a2e1a;">Fetch Auto GEX (GitHub)</button>
+    <div id="autoGexStatus" class="status"></div>
+    <div id="status" class="status"></div>
+
+    <div class="prices">
+      <div class="price-field"><span>NQ price</span><input id="pxNQ" type="number" step="0.01" placeholder="28900" oninput="render()"></div>
+    </div>
+
+    <label style="margin-top:14px;">GEX / Options stats (اختياري)</label>
+    <div class="prices">
+      <div class="price-field"><span>Net GEX (M)</span><input id="netGEX" type="number" step="0.01" placeholder="-3.67"></div>
+      <div class="price-field"><span>P/C Ratio</span><input id="pcRatio" type="number" step="0.01" placeholder="1.75"></div>
+      <div class="price-field"><span>1D Exp Move %</span><input id="expMove" type="number" step="0.01" placeholder="1.56"></div>
+    </div>
+  </div>
+
+  <div class="ladders" id="ladders">
+    <div class="ladder-col"><h2>NQ</h2><div class="empty">no data parsed yet</div></div>
+  </div>
+
+  <div class="panel" id="analysis-panel">
+    <div id="analysis-NQ"><div class="empty">اقرا XML ودخل السعر، ثم اضغط "توليد تحليل"</div></div>
+  </div>
+</div>
+
+<script>
+let levels = { NQ:[], QQQ:[], NDX:[] };
+
+// EDIT THIS LINE — put your own GitHub username/repo here after you set up the Action
+const AUTO_GEX_URL = 'https://raw.githubusercontent.com/GeekRevo1995/nq-gex-auto/main/data/gex_nq_0dte.json';
+
+async function fetchAutoGEX(){
+  const statusEl = document.getElementById('autoGexStatus');
+  statusEl.textContent = 'جاري الجلب...'; statusEl.className = 'status';
+  try{
+    const res = await fetch(AUTO_GEX_URL + '?t=' + Date.now()); // cache-bust so you always get the latest commit
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const d = await res.json();
+    if(!d.levels || !d.levels.length) throw new Error('ماكاين مستويات فالملف — شيك واش الـAction خدمت مرة أولى');
+
+    levels.NQ = d.levels;
+    document.getElementById('pxNQ').value = d.nqSpot;
+    statusEl.textContent = `تم — ${d.levels.length} مستوى، آخر تحديث: ${new Date(d.generatedAt).toLocaleTimeString('ar-MA',{hour:'2-digit',minute:'2-digit'})}`;
+    statusEl.className = 'status ok';
+    render();
+  }catch(err){
+    statusEl.textContent = `خطأ: ${err.message}`;
+    statusEl.className = 'status err';
+  }
+}
+
+
+const colorMap = [
+  { test:n=>/call resistance/i.test(n), color:getVar('--red') },
+  { test:n=>/put support/i.test(n),     color:getVar('--green') },
+  { test:n=>/^.*hvl/i.test(n),          color:getVar('--yellow') },
+  { test:n=>/gamma wall/i.test(n),      color:getVar('--orange') },
+  { test:n=>/1d (min|max)/i.test(n),    color:getVar('--blue') },
+  { test:n=>/^bl \d+/i.test(n) || /\bbl \d+$/i.test(n), color:getVar('--purple') },
+  { test:n=>/gex \d+/i.test(n),         color:getVar('--grey') },
+];
+function getVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+function isMajor(name){
+  return /call resistance$|put support$|^hvl$|1d min|1d max|call resistance 0dte|put support 0dte|hvl 0dte|gamma wall 0dte/i.test(name);
+}
+function colorFor(name){
+  for(const c of colorMap){ if(c.test(name)) return c.color; }
+  return getVar('--grey');
+}
+function groupFor(name){
+  if(/^qqq\s/i.test(name)) return 'QQQ';
+  if(/^ndx\s/i.test(name)) return 'NDX';
+  return 'NQ';
+}
+function stripPrefix(name){
+  return name.replace(/^qqq\s+/i,'').replace(/^ndx\s+/i,'');
+}
+
+function parseXML(){
+  const raw = document.getElementById('xmlInput').value.trim();
+  const statusEl = document.getElementById('status');
+  if(!raw){ statusEl.textContent = 'paste XML first'; statusEl.className='status err'; return; }
+  try{
+    const doc = new DOMParser().parseFromString(raw, 'text/xml');
+    const errNode = doc.querySelector('parsererror');
+    if(errNode) throw new Error('malformed XML');
+    const anns = Array.from(doc.getElementsByTagName('UserAnnotation'));
+    if(anns.length === 0) throw new Error('no UserAnnotation nodes found');
+
+    levels = { NQ:[], QQQ:[], NDX:[] };
+    for(const a of anns){
+      const nameEl = a.getElementsByTagName('TextMsg')[0];
+      const y1El = a.getElementsByTagName('Y1')[0];
+      if(!nameEl || !y1El) continue;
+      const rawName = nameEl.textContent.trim();
+      const price = parseFloat(y1El.textContent);
+      if(!rawName || isNaN(price)) continue;
+      const group = groupFor(rawName);
+      const label = stripPrefix(rawName);
+      levels[group].push({ label, price, major:isMajor(label), color:colorFor(label) });
+    }
+    statusEl.textContent = `parsed ${anns.length} levels — NQ:${levels.NQ.length} QQQ:${levels.QQQ.length} NDX:${levels.NDX.length}`;
+    statusEl.className = 'status ok';
+    render();
+  }catch(e){
+    statusEl.textContent = 'parse error: ' + e.message;
+    statusEl.className = 'status err';
+  }
+}
+
+function render(){
+  const ladders = document.getElementById('ladders');
+  ladders.innerHTML = '';
+  const g = 'NQ';
+  const col = document.createElement('div');
+  col.className = 'ladder-col';
+  const curPriceRaw = document.getElementById('pxNQ').value;
+  const curPrice = curPriceRaw ? parseFloat(curPriceRaw) : null;
+
+  const h2 = document.createElement('h2');
+  h2.innerHTML = `${g} <span class="cur">${curPrice ? curPrice.toFixed(2) : '—'}</span>`;
+  col.appendChild(h2);
+
+  const data = levels[g];
+  if(!data || data.length === 0){
+    const e = document.createElement('div');
+    e.className = 'empty';
+    e.textContent = 'no data parsed yet';
+    col.appendChild(e);
+    ladders.appendChild(col);
+    return;
+  }
+
+  let sorted = [...data];
+  if(curPrice !== null && !isNaN(curPrice)){
+    sorted.sort((a,b)=> Math.abs(a.price-curPrice) - Math.abs(b.price-curPrice));
+  } else {
+    sorted.sort((a,b)=> b.price - a.price);
+  }
+
+  const above = sorted.filter(l=>curPrice!==null && l.price >= curPrice).sort((a,b)=>a.price-b.price);
+  const below = sorted.filter(l=>curPrice!==null && l.price < curPrice).sort((a,b)=>b.price-a.price);
+
+  function rung(l, idx, isNear){
+    const el = document.createElement('div');
+    el.className = 'rung' + (isNear ? '' : ' dim');
+    el.style.borderLeftColor = l.color;
+    const dist = curPrice !== null ? (l.price - curPrice) : null;
+    el.innerHTML = `
+      <span class="dist">${dist !== null ? (dist>0?'+':'') + dist.toFixed(1) : ''}</span>
+      <span class="name">${l.label}${l.major ? ' \u2605' : ''}</span>
+      <span class="px">${l.price.toFixed(2)}</span>`;
+    return el;
+  }
+
+  if(curPrice === null){
+    sorted.forEach(l => col.appendChild(rung(l, 0, true)));
+  }else{
+    const aboveDesc = above.slice().reverse();
+    aboveDesc.forEach((l,i) => col.appendChild(rung(l, i, i >= aboveDesc.length - 3)));
+    const curLine = document.createElement('div');
+    curLine.className = 'cur-line';
+    curLine.textContent = `— ${curPrice.toFixed(2)} —`;
+    col.appendChild(curLine);
+    below.forEach((l,i) => col.appendChild(rung(l, i, i < 3)));
+  }
+
+  const btn = document.createElement('button');
+  btn.className = 'analyze-btn';
+  btn.textContent = 'توليد تحليل';
+  btn.disabled = (curPrice === null || isNaN(curPrice) || data.length === 0);
+  btn.onclick = () => showAnalysis(g, curPrice, data);
+  col.appendChild(btn);
+
+  ladders.appendChild(col);
+}
+
+// ---- analysis engine ----
+
+function findNearMajor(list){
+  // list already ordered nearest-first
+  return list.find(l => l.major) || null;
+}
+
+function groupConfluence(list, threshold){
+  // list ordered nearest-first (by distance). Group consecutive-by-price entries within threshold.
+  const byPrice = [...list].sort((a,b)=>a.price-b.price);
+  const groups = [];
+  let cur = [byPrice[0]];
+  for(let i=1;i<byPrice.length;i++){
+    if(Math.abs(byPrice[i].price - cur[cur.length-1].price) <= threshold){
+      cur.push(byPrice[i]);
+    } else {
+      groups.push(cur); cur = [byPrice[i]];
+    }
+  }
+  groups.push(cur);
+  return groups; // each group sorted ascending by price
+}
+
+function fmt(n){ return n.toFixed(2); }
+
+function describeZone(z, curPrice){
+  if(z.length === 1){
+    const l = z[0];
+    return `${l.label}${l.major?' \u2605':''} عند ${fmt(l.price)} (${Math.abs(l.price-curPrice).toFixed(1)} نقطة)`;
+  }
+  const parts = z.map(l => `${l.label}${l.major?' \u2605':''} عند ${fmt(l.price)} (${Math.abs(l.price-curPrice).toFixed(1)})`).join(' + ');
+  return `${parts} — تجمّع مستويات، نفس المنطقة`;
+}
+
+function levelWeight(l){
+  if(l.major) return 10; // HVL / Call-Put Resistance 0DTE / 1D Max-Min — structural, always heaviest
+  const m = l.label.match(/(\d+)\s*$/);
+  if(m){
+    const rank = parseInt(m[1], 10);
+    return Math.max(1, 11 - rank); // GEX1/BL1 = 10 (strongest) ... GEX10/BL10 = 1 (weakest)
+  }
+  return 3; // unranked/unrecognized label — treat as minor
+}
+
+function bestZone(sideLevels, curPrice, threshold){
+  if(!sideLevels.length) return null;
+  let best = null;
+  for(const l of sideLevels){
+    const dist = Math.abs(l.price - curPrice);
+    const members = sideLevels.filter(o => Math.abs(o.price - l.price) <= threshold);
+    const rawWeight = members.reduce((s,o)=>s+levelWeight(o), 0);
+    const decay = 1 / (1 + dist / (threshold * 15)); // strong walls stay relevant even if a bit farther
+    const score = rawWeight * decay;
+    if(!best || score > best.score){
+      best = { anchorPrice: l.price, members, rawWeight, score, dist };
+    }
+  }
+  return best;
+}
+
+function buildScenarioChain(curPrice, netGEX, pcRatio, expMove, data, threshold){
+  const aboveAll = data.filter(l => l.price >= curPrice);
+  const belowAll = data.filter(l => l.price < curPrice);
+  if(!aboveAll.length && !belowAll.length) return [];
+
+  const zoneAbove = bestZone(aboveAll, curPrice, threshold);
+  const zoneBelow = bestZone(belowAll, curPrice, threshold);
+
+  // pick the side whose strongest confluence zone actually outweighs the other — not just whichever is nearer
+  const leanAbove = zoneAbove && (!zoneBelow || zoneAbove.score >= zoneBelow.score);
+  const chosen = leanAbove ? zoneAbove : zoneBelow;
+  const other  = leanAbove ? zoneBelow : zoneAbove;
+  if(!chosen) return [];
+
+  const z1Min = Math.min(...chosen.members.map(l=>l.price));
+  const z1Max = Math.max(...chosen.members.map(l=>l.price));
+
+  // dirMajor = nearest MAJOR level strictly beyond the chosen zone's outer edge — continuation target (used by S2/S3)
+  const dirMajor = leanAbove
+    ? data.filter(l => l.major && l.price > z1Max).sort((a,b)=>a.price-b.price)[0] || null
+    : data.filter(l => l.major && l.price < z1Min).sort((a,b)=>b.price-a.price)[0] || null;
+  // s1Target = nearest MAJOR level on the OPPOSITE side of current price — where price goes if the fade/bounce succeeds
+  const s1Target = leanAbove
+    ? data.filter(l => l.major && l.price < curPrice).sort((a,b)=>b.price-a.price)[0] || null
+    : data.filter(l => l.major && l.price > curPrice).sort((a,b)=>a.price-b.price)[0] || null;
+  const membersSorted = [...chosen.members].sort((a,b)=>levelWeight(b)-levelWeight(a));
+  const zoneLabel = membersSorted.length > 1
+    ? `تجمع (${membersSorted.map(l=>l.label).join(' + ')})`
+    : membersSorted[0].label;
+  const buf = Math.max(curPrice * 0.0006, 2);
+
+  const negGamma = !isNaN(netGEX) && netGEX < 0;
+  const pcSupportsFade = !isNaN(pcRatio) && ((leanAbove && pcRatio > 1.1) || (!leanAbove && pcRatio < 0.9));
+  const expMoveHigh = !isNaN(expMove) ? curPrice * (1 + expMove/100) : null;
+  const expMoveLow  = !isNaN(expMove) ? curPrice * (1 - expMove/100) : null;
+  const alreadyBehind = !leanAbove; // zone below price = already passed (support); above = not yet reached (resistance)
+  const rangeTxt = `${fmt(z1Min)}${z1Min!==z1Max?'-'+fmt(z1Max):''}`;
+
+  // confidence reflects real signal count, not a fixed script
+  let confidenceScore = 1;
+  const s1Reasons = [
+    alreadyBehind
+      ? `${zoneLabel} (${rangeTxt}) هي أقوى دعم تحت السعر (وزن تراكمي ${chosen.rawWeight.toFixed(0)}/${chosen.members.length} مستويات) — السعر already فوقها. السيناريو خاص pullback/retest، ماشي اختراق جديد.`
+      : `${zoneLabel} (${rangeTxt}) هي أقوى مقاومة فوق السعر (وزن تراكمي ${chosen.rawWeight.toFixed(0)}/${chosen.members.length} مستويات) — مازال ما تلامستش.`
+  ];
+  if(other){
+    const gap = (chosen.score - other.score) / chosen.score;
+    if(gap < 0.15){
+      s1Reasons.push(`تنبيه: المنطقة المعاكسة قريبة فالوزن (${other.rawWeight.toFixed(0)}) — الفارق ماشي حاسم، راقب كيف السعر كيتفاعل قبل الالتزام`);
+      confidenceScore -= 1;
+    }
+  }
+  if(pcSupportsFade){ s1Reasons.push(`P/C Ratio (${pcRatio}) كيدعم رفض أول لمسة`); confidenceScore += 1; }
+  if(negGamma){
+    s1Reasons.push(alreadyBehind
+      ? 'negative gamma → إلا فشل الدعم فالـretest (كسر تحت بدل ارتداد)، النزول غادي يكون أسرع من العادي'
+      : 'negative gamma → إلا انكسرت هاد المقاومة بقبول، الصعود غادي يكون أسرع من العادي');
+  }
+  if(chosen.members.length >= 2){ s1Reasons.push(`${chosen.members.length} مستويات متجمعة فنفس المنطقة — تأكيد إضافي`); confidenceScore += 1; }
+  // sanity-check the continuation target (S2/S3) against the expected daily range
+  let expMoveFlag = '';
+  if(dirMajor && expMoveHigh !== null){
+    const beyondRange = leanAbove ? dirMajor.price > expMoveHigh : dirMajor.price < expMoveLow;
+    if(beyondRange){ expMoveFlag = ` ⚠ هذا الهدف خارج النطاق المتوقع لليوم (±${expMove}%) — احتمالية الوصول ليه اليوم نفسه أضعف`; confidenceScore -= 1; }
+  }
+  // sanity-check S1's bounce-back target against the expected daily range (opposite direction)
+  let s1ExpFlag = '';
+  if(s1Target && expMoveHigh !== null){
+    const beyondRange = leanAbove ? s1Target.price < expMoveLow : s1Target.price > expMoveHigh;
+    if(beyondRange) s1ExpFlag = ` ⚠ خارج النطاق المتوقع لليوم (±${expMove}%)`;
+  }
+
+  const likelihoodTag = confidenceScore >= 2 ? 'الأقرب احتمالاً — عدة عوامل متفقة (نوعي ماشي إحصائي)'
+    : confidenceScore <= 0 ? 'ضعيفة — إشارات متضاربة، راقب فقط'
+    : 'الأقرب احتمالاً (أول لمسة عادة كتترفض)';
+
+  const scenarios = [];
+
+  scenarios.push({
+    id: 'S1', window: '14:30–15:30 (NY Open)',
+    title: `${alreadyBehind ? 'Retest دعم (already تحت السعر)' : 'مقاومة قدام (مازال ما تلامستش)'} — ${zoneLabel}`,
+    likelihood: likelihoodTag,
+    desc: s1Reasons.join('؛ ') + '.',
+    primary: [fmt(leanAbove ? z1Min - buf : z1Max), fmt(leanAbove ? z1Min : z1Max + buf)],
+    secondary: [fmt(z1Min - buf), fmt(z1Max + buf)],
+    confirm: [
+      `إغلاق 1m ${leanAbove?'تحت':'فوق'} ${fmt(leanAbove ? z1Min - buf : z1Max + buf)} بفوليوم فوق المعدل`,
+      `CVD كيبدا ${leanAbove?'يهبط':'يطلع'} مع الاقتراب — ${leanAbove?'بائعين':'مشترين'} مسيطرين`,
+      'Footprint كيبين imbalance عند شمعة الرفض/الارتداد',
+      'إغلاق 5m كيأكد استمرار الحركة'
+    ],
+    dead: `إغلاق 1m ${leanAbove?'فوق':'تحت'} ${fmt(leanAbove ? z1Max + buf : z1Min - buf)} بحجم قوي — السيناريو مات`,
+    target: s1Target ? `${s1Target.label} عند ${fmt(s1Target.price)}${s1ExpFlag}` : '—',
+    most: true,
+    dir: leanAbove ? 'SHORT' : 'LONG'
+  });
+
+  if(dirMajor){
+    scenarios.push({
+      id: 'S2', window: 'يفعل إلا مات S1 (اختراق وقبول)',
+      title: `Continuation عبر ${zoneLabel} نحو ${dirMajor.label}`,
+      likelihood: 'بديل — يفعل فقط إلا فشل الرفض فS1',
+      desc: `إلا قبل السعر (1m close) ${leanAbove?'فوق':'تحت'} ${fmt(leanAbove?z1Max:z1Min)}، الاستمرارية نحو ${dirMajor.label} (${fmt(dirMajor.price)}) هي السيناريو الحي${negGamma?' — negative gamma كيدعم اختراقات أقوى من العادي':''}.${expMoveFlag}`,
+      primary: [fmt(leanAbove?z1Max:dirMajor.price), fmt(leanAbove?dirMajor.price:z1Min)],
+      secondary: [],
+      confirm: [
+        `إغلاق 1m ${leanAbove?'فوق':'تحت'} ${fmt(leanAbove?z1Max:z1Min)} بفوليوم قوي`,
+        `CVD مستمر ${leanAbove?'طالع':'هابط'} بلا تراجع`,
+        negGamma ? 'negative gamma كيدعم الاستمرارية' : 'راقب رفض إضافي (positive gamma)'
+      ],
+      dead: `رجوع سريع داخل ${zoneLabel} بلا acceptance`,
+      target: `${dirMajor.label} (${fmt(dirMajor.price)})`,
+      most: false,
+      dir: leanAbove ? 'LONG' : 'SHORT'
+    });
+  }
+
+  if(dirMajor){
+    scenarios.push({
+      id: 'S3', window: 'يفعل إلا وصل S2 لهدفو',
+      title: `Reversal عند ${dirMajor.label}`,
+      likelihood: 'بعيد المدى — تابع لنجاح S2 بالكامل',
+      desc: `إلا فعلاً السعر مشى بعيد ووصل لـ${dirMajor.label} (${fmt(dirMajor.price)}) (هدف S2 نفسو)، راقب رفض/ارتداد من هاد الحاجز والرجوع نحو ${zoneLabel}.`,
+      primary: [fmt(dirMajor.price-buf), fmt(dirMajor.price+buf)],
+      secondary: [],
+      confirm: ['شمعة رفض واضحة', 'CVD divergence', 'حجم أعلى من المعدل عند اللمسة'],
+      dead: 'قبول (إغلاق) عبر المستوى بدل الرفض',
+      target: `رجوع نحو ${zoneLabel}`,
+      most: false,
+      dir: leanAbove ? 'SHORT' : 'LONG'
+    });
+  }
+
+  return scenarios;
+}
+
+function renderScenarioChain(scenarios){
+  if(!scenarios.length) return '';
+  let html = `<h3 style="margin-top:16px;">أفضل السيناريوهات (Highest Probability Chain)</h3>`;
+  scenarios.forEach(s => {
+    const badge = s.most ? `<span style="background:var(--red);color:#000;padding:2px 8px;border-radius:3px;font-size:10px;font-weight:700;">الأرجح</span>` : '';
+    const dirColor = s.dir === 'LONG' ? 'var(--green)' : 'var(--red)';
+    const dirBadge = s.dir ? `<span style="background:${dirColor};color:#000;padding:2px 8px;border-radius:3px;font-size:10px;font-weight:700;margin-inline-end:6px;">${s.dir}</span>` : '';
+    html += `<div style="border:1px solid var(--line);border-radius:6px;padding:12px;margin:10px 0;background:#0e1116;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:10px;color:var(--dim);">${s.id} · ${s.window}</span>
+        <div>${dirBadge}${badge}</div>
+      </div>
+      <p style="font-weight:700;font-size:13px;margin:6px 0;">${s.title}</p>
+      <p style="color:var(--dim);font-size:11px;">${s.likelihood}</p>
+      <p>${s.desc}</p>
+      <p><span class="tag">دخول أساسي:</span> ${s.primary[0]} – ${s.primary[1]}</p>
+      ${s.secondary.length ? `<p><span class="tag">دخول ثانوي:</span> ${s.secondary[0]} – ${s.secondary[1]}</p>` : ''}
+      <p><span class="tag">التأكيد (كامل ولا بلاش):</span></p>
+      <ul style="margin:4px 0 4px 18px;padding:0;">${s.confirm.map(c=>`<li>${c}</li>`).join('')}</ul>
+      <p><span class="tag">الهدف:</span> ${s.target}</p>
+      <p><span class="tag warn">مات إلا:</span> ${s.dead}</p>
+    </div>`;
+  });
+  html += `<p style="color:var(--dim);font-size:12px;">القاعدة الصارمة: AOI+ORB+Orderflow خاصهم الثلاثة يتفقو قبل أي دخول. ما تحركش الستوب لـbreakeven قبل 1R كامل. Confirm items بحال CVD/Footprint/Volume خاصك تقراهم بنفسك من Bookmap/Sierra Chart — الأداة ماعندهاش وصول لداتا orderflow مباشرة.</p>`;
+  return html;
+}
+
+
+function showAnalysis(group, curPrice, data){
+  const box = document.getElementById('analysis-' + group);
+  if(!box) return;
+  if(curPrice === null || isNaN(curPrice) || !data || data.length === 0){
+    box.innerHTML = '<div class="analysis"><p>خاصك تدخل السعر الحالي وتقرأ XML أولاً.</p></div>';
+    return;
+  }
+
+  const threshold = Math.max(curPrice * 0.001, 3);
+  const above3 = data.filter(l=>l.price>=curPrice).sort((a,b)=>a.price-b.price).slice(0,3);
+  const below3 = data.filter(l=>l.price<curPrice).sort((a,b)=>b.price-a.price).slice(0,3);
+
+  const aboveGroups = above3.length ? groupConfluence(above3, threshold) : [];
+  const belowGroups = below3.length ? groupConfluence(below3, threshold).reverse() : []; // nearest-to-price first
+
+
+
+  // bias via HVL (prefer 0DTE)
+  const hvl = data.find(l => /^hvl 0dte$/i.test(l.label)) || data.find(l => /^hvl$/i.test(l.label));
+  let biasHTML = '';
+  if(hvl){
+    const above = curPrice >= hvl.price;
+    biasHTML = `<p>الانحياز حسب <span class="tag">${hvl.label}</span> (${fmt(hvl.price)}): السعر ${above ? '<span class="tag up">فوق</span> — ميل أقرب للصعود' : '<span class="tag down">تحت</span> — ميل أقرب للهبوط'}.</p>`;
+  }
+
+  // optional GEX/options market stats
+  const netGEX = parseFloat(document.getElementById('netGEX').value);
+  const pcRatio = parseFloat(document.getElementById('pcRatio').value);
+  const expMove = parseFloat(document.getElementById('expMove').value);
+  let statsHTML = '';
+  if(!isNaN(netGEX) || !isNaN(pcRatio) || !isNaN(expMove)){
+    statsHTML += `<h3 style="margin-top:14px;">سياق GEX العام</h3>`;
+    if(!isNaN(netGEX)){
+      const regime = netGEX < 0 ? 'سالب (Negative Gamma)' : 'موجب (Positive Gamma)';
+      const regimeTxt = netGEX < 0
+        ? 'الدايلرز مضطرين يشريو مع الطلوع ويبيعو مع النزول → حركات أسرع وأوسع، اختراقات ORB أقوى من العادي، احترام أقل للمستويات.'
+        : 'الدايلرز كيلعبو دور استقرار (بيع مع الطلوع، شرا مع النزول) → حركة أهدأ، احترام أكبر للمستويات، رفض أسرع عند الحدود.';
+      statsHTML += `<p><span class="tag">نظام الغاما اليوم:</span> ${regime}. ${regimeTxt}</p>`;
+    }
+    if(!isNaN(pcRatio)){
+      const skew = pcRatio > 1.2 ? 'تموقع دفاعي/هبوطي واضح (بوتات أكثر)' : (pcRatio < 0.8 ? 'تموقع صعودي واضح (كولز أكثر)' : 'تموقع متوازن نسبيًا');
+      statsHTML += `<p><span class="tag">Put/Call Ratio:</span> ${pcRatio} — ${skew}.</p>`;
+    }
+    if(!isNaN(expMove)){
+      const moveAbs = curPrice * expMove/100;
+      statsHTML += `<p><span class="tag">النطاق المتوقع لليوم (±${expMove}%):</span> بين ${fmt(curPrice-moveAbs)} و ${fmt(curPrice+moveAbs)} — قارنو مع Call/Put Resistance 0DTE فالمستويات باش تشوف واش متفقين.</p>`;
+    }
+  }
+
+  // nearest major levels overall (decisive levels)
+  const majorAbove = data.filter(l=>l.major && l.price>=curPrice).sort((a,b)=>a.price-b.price)[0];
+  const majorBelow = data.filter(l=>l.major && l.price<curPrice).sort((a,b)=>b.price-a.price)[0];
+
+  let html = `<div class="analysis"><h3>${group} — تحليل عند ${fmt(curPrice)}</h3>`;
+  html += biasHTML;
+  html += statsHTML;
+
+  html += `<p><span class="tag up">فوق السعر:</span> ${aboveGroups.map(z=>describeZone(z,curPrice)).join(' ، ثم ')}</p>`;
+  html += `<p><span class="tag down">تحت السعر:</span> ${belowGroups.map(z=>describeZone(z,curPrice)).join(' ، ثم ')}</p>`;
+
+  if(majorAbove){
+    html += `<p><span class="tag warn">المستوى الحاسم فوق:</span> ${majorAbove.label} عند ${fmt(majorAbove.price)} (${(majorAbove.price-curPrice).toFixed(1)} نقطة) — عتبة حقيقية، ماشي مجرد GEX/BL ثانوي.</p>`;
+  }
+  if(majorBelow){
+    html += `<p><span class="tag warn">المستوى الحاسم تحت:</span> ${majorBelow.label} عند ${fmt(majorBelow.price)} (${(curPrice-majorBelow.price).toFixed(1)} نقطة) — عتبة حقيقية، ماشي مجرد GEX/BL ثانوي.</p>`;
+  }
+
+  const nearestAboveDist = above3.length ? (above3[0].price - curPrice) : null;
+  const nearestBelowDist = below3.length ? (curPrice - below3[0].price) : null;
+  if(nearestAboveDist !== null && nearestBelowDist !== null){
+    const rangeTxt = nearestAboveDist < threshold*1.5 && nearestBelowDist < threshold*1.5
+      ? 'السعر محصور حاليًا بين مستويات ثانوية قريبة بزاف من الجهتين — نطاق ضيق، لا تتوقع حركة كبيرة بلا اختراق واضح مؤكد بالـ ORB/Orderflow.'
+      : 'الفجوة بين السعر والمستوى الأقرب معقولة — راقب رد الفعل الأول عند الاقتراب قبل أي قرار.';
+    html += `<p>${rangeTxt}</p>`;
+  }
+
+  html += renderScenarioChain(buildScenarioChain(curPrice, netGEX, pcRatio, expMove, data, threshold));
+
+  // ---- premarket / NY open session plan ----
+  html += `<h3 style="margin-top:16px;">خطة الجلسة (NY Open — 14:30 بتوقيت المغرب)</h3>`;
+
+  const aoiAbove = aboveGroups[0] ? aboveGroups[0].map(l=>`${l.label}${l.major?' \u2605':''} عند ${fmt(l.price)}`).join(' + ') : 'لا يوجد';
+  const aoiBelow = belowGroups[0] ? belowGroups[0].map(l=>`${l.label}${l.major?' \u2605':''} عند ${fmt(l.price)}`).join(' + ') : 'لا يوجد';
+
+  html += `<p><span class="tag">AOI للمراقبة اليوم:</span></p>`;
+  html += `<p>فوق السعر: ${aoiAbove}</p>`;
+  html += `<p>تحت السعر: ${aoiBelow}</p>`;
+  html += `<p style="color:var(--dim);font-size:12px;">(هادو GEX levels، مجرد نقطة انتباه أولية — خاصهم قبول ORB وتأكيد Orderflow باش يوليو AOI صالحة للدخول)</p>`;
+
+  html += `</div>`;
+  box.innerHTML = html;
+}
+</script>
+</body>
+</html>
