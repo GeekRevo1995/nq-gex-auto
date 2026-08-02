@@ -116,7 +116,8 @@
   <div class="panel">
     <label>XML source</label>
     <textarea id="xmlInput" placeholder="paste the full ArrayOfUserAnnotation XML here..."></textarea>
-    <button onclick="parseXML()">Parse levels</button>
+    <button onclick="parseXML()">Parse levels (XML)</button>
+    <button onclick="parseSimpleList()" style="margin-top:6px;background:#1a2436;">Parse Simple List (label, price, ...)</button>
     <button onclick="fetchAutoGEX()" style="margin-top:6px;background:#1a2e1a;">Fetch Auto GEX (GitHub)</button>
     <div id="autoGexStatus" class="status"></div>
     <div id="status" class="status"></div>
@@ -234,6 +235,35 @@ function groupFor(name){
 }
 function stripPrefix(name){
   return name.replace(/^qqq\s+/i,'').replace(/^ndx\s+/i,'');
+}
+
+function parseSimpleList(){
+  const raw = document.getElementById('xmlInput').value.trim();
+  const statusEl = document.getElementById('status');
+  if(!raw){ statusEl.textContent = 'paste the list first'; statusEl.className='status err'; return; }
+  try{
+    // strip an optional "$NQ1!:" style symbol prefix
+    const cleaned = raw.replace(/^\$?\S+:\s*/, '');
+    const tokens = cleaned.split(',').map(t => t.trim()).filter(t => t.length);
+    if(tokens.length < 2 || tokens.length % 2 !== 0) throw new Error(`expected label,price pairs — got ${tokens.length} tokens (odd count)`);
+
+    const newLevels = [];
+    for(let i = 0; i < tokens.length; i += 2){
+      const label = tokens[i];
+      const price = parseFloat(tokens[i+1]);
+      if(!label || isNaN(price)) continue;
+      newLevels.push({ label, price, major: isMajor(label), color: colorFor(label) });
+    }
+    if(!newLevels.length) throw new Error('no valid label/price pairs found');
+
+    levels.NQ = newLevels;
+    statusEl.textContent = `parsed ${newLevels.length} NQ levels (simple list)`;
+    statusEl.className = 'status ok';
+    render();
+  }catch(e){
+    statusEl.textContent = 'parse error: ' + e.message;
+    statusEl.className = 'status err';
+  }
 }
 
 function parseXML(){
