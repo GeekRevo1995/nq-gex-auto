@@ -173,6 +173,10 @@
     <div class="price-field"><span>ملاحظة</span><input id="btNote" type="text" placeholder="اختياري"></div>
   </div>
   <button onclick="addBacktestEntry()" style="margin-top:10px;">زيد Entry</button>
+  <button onclick="exportBacktest()" style="margin-top:10px;background:#1a2e1a;">Export JSON</button>
+  <input type="file" id="btImportFile" accept=".json" style="display:none;" onchange="importBacktestFile(this.files[0])">
+  <button onclick="document.getElementById('btImportFile').click()" style="margin-top:10px;background:#1a2436;">Import JSON</button>
+  <div id="btImportStatus" class="status"></div>
 
   <div id="btStats" style="margin-top:16px;"></div>
   <div id="btTable" style="margin-top:12px;overflow-x:auto;"></div>
@@ -732,6 +736,50 @@ function renderBacktest(){
       <th style="padding:6px;">تاريخ</th><th style="padding:6px;">نوع</th><th style="padding:6px;">اتجاه</th>
       <th style="padding:6px;">نتيجة</th><th style="padding:6px;">R</th><th style="padding:6px;">ملاحظة</th><th></th>
     </tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function exportBacktest(){
+  const entries = loadBacktest();
+  const blob = new Blob([JSON.stringify(entries, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `gex-backtest-log-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importBacktestFile(file){
+  const statusEl = document.getElementById('btImportStatus');
+  if(!file){ return; }
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const imported = JSON.parse(reader.result);
+      if(!Array.isArray(imported)) throw new Error('الملف ماشي فورمات صحيح');
+
+      const existing = loadBacktest();
+      // dedupe: skip an imported entry if an identical one (same date+type+dir+result+r+note) already exists
+      const key = e => `${e.date}|${e.type}|${e.dir}|${e.result}|${e.r}|${e.note}`;
+      const existingKeys = new Set(existing.map(key));
+      let added = 0;
+      imported.forEach(e => {
+        if(!existingKeys.has(key(e))){
+          existing.push(e);
+          existingKeys.add(key(e));
+          added++;
+        }
+      });
+      saveBacktest(existing);
+      renderBacktest();
+      statusEl.textContent = `تم — زيد ${added} entry جديد (${imported.length - added} مكررين اتهملو)`;
+      statusEl.className = 'status ok';
+    }catch(err){
+      statusEl.textContent = `خطأ: ${err.message}`;
+      statusEl.className = 'status err';
+    }
+  };
+  reader.readAsText(file);
 }
 
 document.addEventListener('DOMContentLoaded', renderBacktest);
