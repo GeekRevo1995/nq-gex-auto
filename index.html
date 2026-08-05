@@ -387,7 +387,7 @@ function render(){
   col.appendChild(btn);
 
   ladders.appendChild(col);
-  renderRankedLevels(data);
+  renderRankedLevels(data, curPrice);
 }
 
 function findNearMajor(list){
@@ -432,7 +432,7 @@ function levelWeight(l){
   return 3; // unranked/unrecognized label — treat as minor
 }
 
-function renderRankedLevels(data){
+function renderRankedLevels(data, curPrice){
   const box = document.getElementById('rankedLevelsBox');
   if(!box) return;
   if(!data || !data.length){
@@ -440,20 +440,34 @@ function renderRankedLevels(data){
     return;
   }
 
-  const ranked = [...data].sort((a,b) => levelWeight(b) - levelWeight(a));
-  const rows = ranked.map(l => {
+  const hasPrice = curPrice !== null && curPrice !== undefined && !isNaN(curPrice);
+  const scale = hasPrice ? Math.max(curPrice * 0.003, 10) : null;
+
+  const scored = data.map(l => {
     const w = levelWeight(l);
+    const dist = hasPrice ? Math.abs(l.price - curPrice) : null;
+    const score = hasPrice ? w / (1 + dist / scale) : w;
+    return { l, w, dist, score };
+  });
+  scored.sort((a, b) => b.score - a.score);
+
+  const rows = scored.map(({l, w, dist}) => {
     const tier = w >= 8 ? { emoji:'🟢', bg:'#0f2e17', bd:'var(--green)' }
                : w >= 4 ? { emoji:'🟡', bg:'#2e2a0f', bd:'#f1c40f' }
                :          { emoji:'🔴', bg:'#2e0f14', bd:'var(--red)' };
+    const distTxt = dist !== null ? `<span style="color:var(--dim);font-size:11px;">${(l.price>=curPrice?'+':'')}${(l.price-curPrice).toFixed(1)}</span>` : '';
     return `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;margin:3px 0;background:${tier.bg};border-right:3px solid ${tier.bd};border-radius:3px;">
       <span>${tier.emoji} <b>${l.label}</b>${l.major?' \u2605':''}</span>
       <span style="font-family:var(--mono);">${fmt(l.price)}</span>
+      ${distTxt}
       <span style="color:var(--dim);font-size:11px;">وزن: ${w}</span>
     </div>`;
   }).join('');
 
-  box.innerHTML = `<div>${rows}</div>`;
+  const noteTxt = hasPrice
+    ? 'مرتبة حسب (القوة × القرب من السعر الحالي) — الأقوى والأقرب فوق.'
+    : 'دخل السعر باش يترتبو حسب القرب زيادة على القوة (دابا مرتبة بالقوة بوحدها).';
+  box.innerHTML = `<p style="color:var(--dim);font-size:11px;margin:0 0 8px;">${noteTxt}</p>${rows}`;
 }
 
 function bestZone(sideLevels, curPrice, threshold){
