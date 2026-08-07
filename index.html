@@ -432,6 +432,15 @@ function levelWeight(l){
   return 3; // unranked/unrecognized label — treat as minor
 }
 
+function scoreScale(curPrice){
+  return Math.max(curPrice * 0.003, 10);
+}
+
+function levelScore(l, curPrice, scale){
+  const dist = Math.abs(l.price - curPrice);
+  return levelWeight(l) / (1 + dist / scale);
+}
+
 function renderRankedLevels(data, curPrice){
   const box = document.getElementById('rankedLevelsBox');
   if(!box) return;
@@ -441,12 +450,12 @@ function renderRankedLevels(data, curPrice){
   }
 
   const hasPrice = curPrice !== null && curPrice !== undefined && !isNaN(curPrice);
-  const scale = hasPrice ? Math.max(curPrice * 0.003, 10) : null;
+  const scale = hasPrice ? scoreScale(curPrice) : null;
 
   const scored = data.map(l => {
     const w = levelWeight(l);
     const dist = hasPrice ? Math.abs(l.price - curPrice) : null;
-    const score = hasPrice ? w / (1 + dist / scale) : w;
+    const score = hasPrice ? levelScore(l, curPrice, scale) : w;
     return { l, w, dist, score };
   });
   scored.sort((a, b) => b.score - a.score);
@@ -494,13 +503,17 @@ function renderRankedLevels(data, curPrice){
 
 function bestZone(sideLevels, curPrice, threshold){
   if(!sideLevels.length) return null;
+  const scale = scoreScale(curPrice);
   let best = null;
   for(const l of sideLevels){
     const dist = Math.abs(l.price - curPrice);
     const members = sideLevels.filter(o => Math.abs(o.price - l.price) <= threshold);
     const rawWeight = members.reduce((s,o)=>s+levelWeight(o), 0);
-    const decay = 1 / (1 + dist / (threshold * 15)); // strong walls stay relevant even if a bit farther
-    const score = rawWeight * decay;
+    // same decay formula as the Ranked Levels panel — a zone's anchor score plus
+    // whatever confluence weight sits within `threshold` of it
+    const anchorScore = levelScore(l, curPrice, scale);
+    const confluenceBonus = members.filter(o => o !== l).reduce((s,o)=>s+levelScore(o, curPrice, scale), 0);
+    const score = anchorScore + confluenceBonus;
     if(!best || score > best.score){
       best = { anchorPrice: l.price, members, rawWeight, score, dist };
     }
