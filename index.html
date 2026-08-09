@@ -110,13 +110,15 @@
 <body>
 
 <h1>GEX LADDER</h1>
-<div class="sub">paste sierra chart annotation XML → nearest levels ranked by distance from live price</div>
+<div class="sub">حمل full_levels_NQ.json من OFK GEX Pipeline (لصق أو اختيار ملف) → مستويات مرتبة حسب القرب من السعر الحي</div>
 
 <div class="layout">
   <div class="panel">
-    <label>XML source</label>
-    <textarea id="xmlInput" placeholder="paste the full ArrayOfUserAnnotation XML here..."></textarea>
-    <button onclick="parseXML()">Parse levels (XML)</button>
+    <label>GEX Pipeline JSON</label>
+    <textarea id="xmlInput" placeholder="الصق هنا محتوى full_levels_NQ.json، أو استعمل زر (Load JSON File) تحت..."></textarea>
+    <button onclick="parseGexPipelineJSON()" style="background:#1a2e1a;">Load GEX Pipeline JSON</button>
+    <input type="file" id="gexJsonFile" accept=".json" style="display:none;" onchange="loadGexPipelineJSONFile(this.files[0])">
+    <button onclick="document.getElementById('gexJsonFile').click()" style="margin-top:6px;background:#1a2436;">Load JSON File...</button>
     <button onclick="parseSimpleList()" style="margin-top:6px;background:#1a2436;">Parse Simple List (label, price, ...)</button>
     <button onclick="fetchAutoGEX()" style="margin-top:6px;background:#1a2e1a;">Fetch Auto GEX (GitHub)</button>
     <div id="autoGexStatus" class="status"></div>
@@ -128,7 +130,7 @@
 
     <label style="margin-top:14px;">GEX / Options stats (اختياري)</label>
     <div class="prices">
-      <div class="price-field"><span>Net GEX (M)</span><input id="netGEX" type="number" step="0.01" placeholder="-3.67"></div>
+      <div class="price-field"><span>Net GEX (B)</span><input id="netGEX" type="number" step="0.01" placeholder="-3.67"></div>
       <div class="price-field"><span>P/C Ratio</span><input id="pcRatio" type="number" step="0.01" placeholder="1.75"></div>
       <div class="price-field"><span>1D Exp Move %</span><input id="expMove" type="number" step="0.01" placeholder="1.56"></div>
     </div>
@@ -252,15 +254,6 @@ function colorFor(name){
   for(const c of colorMap){ if(c.test(name)) return c.color; }
   return getVar('--grey');
 }
-function groupFor(name){
-  if(/^qqq\s/i.test(name)) return 'QQQ';
-  if(/^ndx\s/i.test(name)) return 'NDX';
-  return 'NQ';
-}
-function stripPrefix(name){
-  return name.replace(/^qqq\s+/i,'').replace(/^ndx\s+/i,'');
-}
-
 function parseSimpleList(){
   const raw = document.getElementById('xmlInput').value.trim();
   const statusEl = document.getElementById('status');
@@ -290,36 +283,113 @@ function parseSimpleList(){
   }
 }
 
-function parseXML(){
+// ---- GEX Pipeline JSON loader (replaces the old Sierra Chart XML parser) ----
+// Reads the shape produced by OFK_GEX_Pipeline's full_levels_NQ.json and maps
+// it into the same {label, price, major, color} ladder format the rest of
+// the page already knows how to render/score/analyze.
+
+function addLevel(list, label, price, major, color){
+  if(price === null || price === undefined || isNaN(price)) return;
+  list.push({ label, price: Number(price), major: !!major, color });
+}
+
+function buildLevelsFromPipeline(d){
+  const L = [];
+
+  // --- Core structural levels (broad context) ---
+  addLevel(L, 'Gamma Flip', d.gamma_flip, true, getVar('--yellow'));
+  addLevel(L, 'Vol Trigger', d.vol_trigger, true, getVar('--orange'));
+  addLevel(L, 'Risk Pivot', d.risk_pivot, true, getVar('--purple'));
+  addLevel(L, 'Vanna Flip', d.vanna_flip, true, getVar('--blue'));
+  addLevel(L, 'Charm Magnet', d.charm_magnet, true, getVar('--blue'));
+  addLevel(L, 'Max Pain', d.max_pain_nq, true, getVar('--grey'));
+  addLevel(L, 'Call Wall (Structural)', d.call_wall, true, getVar('--red'));
+  addLevel(L, 'Put Wall (Structural)', d.put_wall, true, getVar('--green'));
+
+  // --- Intraday (0-7 DTE) walls & transitions — most relevant for scalping ---
+  addLevel(L, 'Call Wall 0-7d', d.call_wall_intraday_nq, true, getVar('--red'));
+  addLevel(L, 'Put Wall 0-7d', d.put_wall_intraday_nq, true, getVar('--green'));
+  addLevel(L, 'C-Trans 0-7d', d.c_trans_intraday_nq, false, getVar('--grey'));
+  addLevel(L, 'P-Trans 0-7d', d.p_trans_intraday_nq, false, getVar('--grey'));
+  addLevel(L, 'D+ DEX 0-7d', d.dex_plus_intraday_nq, false, getVar('--blue'));
+  addLevel(L, 'D- DEX 0-7d', d.dex_minus_intraday_nq, false, getVar('--blue'));
+
+  // --- 0DTE session-end magnets ---
+  addLevel(L, 'Max Pain 0DTE', d.max_pain_0dte_nq, true, getVar('--grey'));
+  addLevel(L, 'Pin Strike 0DTE', d.pin_strike_0dte_nq, true, getVar('--orange'));
+
+  // --- Ranked |GEX| levels (0-7d) — trailing number drives the weight scale ---
+  [d.abs_gex_intraday_1_nq, d.abs_gex_intraday_2_nq, d.abs_gex_intraday_3_nq].forEach((p, i) => {
+    addLevel(L, `GEX ${i + 1}`, p, false, getVar('--grey'));
+  });
+
+  // --- Extended GEX walls (0-7d) ---
+  [1, 2, 3, 4].forEach(n => {
+    addLevel(L, `Wall Ext ${n}`, d[`gex_wall_ext_${n}_nq`], false, getVar('--purple'));
+  });
+
+  // --- Top open-interest strikes (0-7d) ---
+  if(Array.isArray(d.top_oi_intraday)){
+    d.top_oi_intraday.forEach((row, i) => {
+      addLevel(L, `OI ${i + 1}`, row.strike_nq, false, getVar('--grey'));
+    });
+  }
+
+  return L;
+}
+
+function applyPipelineJSON(d, statusEl){
+  const newLevels = buildLevelsFromPipeline(d);
+  if(!newLevels.length){
+    statusEl.textContent = 'ماكاين ولا مستوى صالح فهاد JSON — تأكد من الفورمات';
+    statusEl.className = 'status err';
+    return;
+  }
+
+  levels = { NQ: newLevels, QQQ: [], NDX: [] };
+
+  if(typeof d.spot_nq === 'number') document.getElementById('pxNQ').value = d.spot_nq;
+  if(typeof d.total_gex === 'number') document.getElementById('netGEX').value = (d.total_gex / 1e9).toFixed(3);
+  if(typeof d.pcr === 'number') document.getElementById('pcRatio').value = d.pcr;
+  if(typeof d.expected_move_nq === 'number' && d.spot_nq){
+    document.getElementById('expMove').value = ((d.expected_move_nq / d.spot_nq) * 100).toFixed(2);
+  }
+
+  const tradeDate = d.trade_date || '—';
+  statusEl.textContent = `تم — ${newLevels.length} مستوى محملين (trade_date: ${tradeDate}, spot: ${d.spot_nq ?? '—'})`;
+  statusEl.className = 'status ok';
+  render();
+}
+
+function parseGexPipelineJSON(){
   const raw = document.getElementById('xmlInput').value.trim();
   const statusEl = document.getElementById('status');
-  if(!raw){ statusEl.textContent = 'paste XML first'; statusEl.className='status err'; return; }
+  if(!raw){ statusEl.textContent = 'الصق محتوى full_levels_NQ.json أولاً'; statusEl.className = 'status err'; return; }
   try{
-    const doc = new DOMParser().parseFromString(raw, 'text/xml');
-    const errNode = doc.querySelector('parsererror');
-    if(errNode) throw new Error('malformed XML');
-    const anns = Array.from(doc.getElementsByTagName('UserAnnotation'));
-    if(anns.length === 0) throw new Error('no UserAnnotation nodes found');
-
-    levels = { NQ:[], QQQ:[], NDX:[] };
-    for(const a of anns){
-      const nameEl = a.getElementsByTagName('TextMsg')[0];
-      const y1El = a.getElementsByTagName('Y1')[0];
-      if(!nameEl || !y1El) continue;
-      const rawName = nameEl.textContent.trim();
-      const price = parseFloat(y1El.textContent);
-      if(!rawName || isNaN(price)) continue;
-      const group = groupFor(rawName);
-      const label = stripPrefix(rawName);
-      levels[group].push({ label, price, major:isMajor(label), color:colorFor(label) });
-    }
-    statusEl.textContent = `parsed ${anns.length} levels — NQ:${levels.NQ.length} QQQ:${levels.QQQ.length} NDX:${levels.NDX.length}`;
-    statusEl.className = 'status ok';
-    render();
+    const d = JSON.parse(raw);
+    applyPipelineJSON(d, statusEl);
   }catch(e){
-    statusEl.textContent = 'parse error: ' + e.message;
+    statusEl.textContent = 'JSON parse error: ' + e.message;
     statusEl.className = 'status err';
   }
+}
+
+function loadGexPipelineJSONFile(file){
+  const statusEl = document.getElementById('status');
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const d = JSON.parse(reader.result);
+      document.getElementById('xmlInput').value = reader.result;
+      applyPipelineJSON(d, statusEl);
+    }catch(e){
+      statusEl.textContent = 'JSON parse error: ' + e.message;
+      statusEl.className = 'status err';
+    }
+  };
+  reader.onerror = () => { statusEl.textContent = 'تعذرت قراءة الملف'; statusEl.className = 'status err'; };
+  reader.readAsText(file);
 }
 
 function render(){
