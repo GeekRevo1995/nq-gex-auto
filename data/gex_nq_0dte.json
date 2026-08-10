@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-08-10T20:15:32.871121+00:00",
+  "generatedAt": "2026-08-10T20:20:46.151820+00:00",
   "nqSpot": 29744.75,
   "qqqSpot": 720.87,
   "scale": 41.2623,
   "levels": [
     {
       "label": "HVL 0DTE",
-      "price": 21263.18,
+      "price": 28048.34,
       "major": true,
       "color": "#f1c40f"
     },
@@ -38,19 +38,19 @@
       "label": "GEX 3",
       "price": 29791.38,
       "major": false,
-      "color": "#2ecc71"
-    },
-    {
-      "label": "GEX 4",
-      "price": 29667.59,
-      "major": false,
       "color": "#e74c3c"
     },
     {
-      "label": "GEX 5",
+      "label": "GEX 4",
       "price": 29873.9,
       "major": false,
       "color": "#2ecc71"
+    },
+    {
+      "label": "GEX 5",
+      "price": 29667.59,
+      "major": false,
+      "color": "#e74c3c"
     },
     {
       "label": "GEX 6",
