@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-08-14T21:45:28.393389+00:00",
+  "generatedAt": "2026-08-14T21:57:54.805402+00:00",
   "nqSpot": 30154.0,
   "qqqSpot": 731.07,
   "scale": 41.2464,
   "levels": [
     {
       "label": "HVL 0DTE",
-      "price": 27730.63,
+      "price": 27733.3,
       "major": true,
       "color": "#f1c40f"
     },
