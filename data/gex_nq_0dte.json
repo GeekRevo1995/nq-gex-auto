@@ -1,80 +1,80 @@
 {
-  "generatedAt": "2026-08-18T14:00:28.729391+00:00",
-  "nqSpot": 29661.0,
-  "qqqSpot": 718.97,
-  "scale": 41.2549,
+  "generatedAt": "2026-08-18T14:15:36.197013+00:00",
+  "nqSpot": 29659.25,
+  "qqqSpot": 717.76,
+  "scale": 41.322,
   "levels": [
     {
       "label": "Call Resistance 0DTE",
-      "price": 30528.59,
+      "price": 29834.45,
       "major": true,
       "color": "#3498db"
     },
     {
       "label": "Put Support 0DTE",
-      "price": 29703.49,
+      "price": 29751.81,
       "major": true,
       "color": "#e67e22"
     },
     {
       "label": "GEX 1",
-      "price": 29703.49,
+      "price": 29710.49,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 2",
-      "price": 29662.24,
+      "price": 29669.17,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 3",
-      "price": 29620.98,
+      "price": 29751.81,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 4",
-      "price": 29827.26,
+      "price": 29545.2,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     },
     {
       "label": "GEX 5",
-      "price": 29497.22,
+      "price": 29627.84,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 6",
-      "price": 29909.77,
+      "price": 29793.13,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 7",
-      "price": 29868.51,
+      "price": 29834.45,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 8",
-      "price": 29579.73,
+      "price": 29586.52,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 9",
-      "price": 29538.47,
+      "price": 29875.78,
       "major": false,
-      "color": "#e74c3c"
+      "color": "#2ecc71"
     },
     {
       "label": "GEX 10",
-      "price": 29744.75,
+      "price": 29917.1,
       "major": false,
-      "color": "#e74c3c"
+      "color": "#2ecc71"
     }
   ]
 }
