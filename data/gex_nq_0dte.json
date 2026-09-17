@@ -1,84 +1,84 @@
 {
-  "generatedAt": "2026-09-17T13:00:28.369613+00:00",
-  "nqSpot": 29716.0,
+  "generatedAt": "2026-09-17T13:15:27.708492+00:00",
+  "nqSpot": 29731.0,
   "qqqSpot": 704.72,
-  "scale": 42.1671,
+  "scale": 42.1884,
   "levels": [
     {
       "label": "HVL 0DTE",
-      "price": 29693.63,
+      "price": 29708.62,
       "major": true,
       "color": "#f1c40f"
     },
     {
       "label": "Call Resistance 0DTE",
-      "price": 29938.64,
+      "price": 29953.76,
       "major": true,
       "color": "#3498db"
     },
     {
       "label": "Put Support 0DTE",
-      "price": 29516.97,
+      "price": 29531.87,
       "major": true,
       "color": "#e67e22"
     },
     {
       "label": "GEX 1",
-      "price": 29727.81,
+      "price": 29742.81,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 2",
-      "price": 29685.64,
+      "price": 29700.63,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 3",
-      "price": 29643.47,
+      "price": 29658.44,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 4",
-      "price": 29854.31,
+      "price": 29869.38,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 5",
-      "price": 30022.98,
+      "price": 30038.13,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 6",
-      "price": 29559.14,
+      "price": 29574.06,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 7",
-      "price": 29896.48,
+      "price": 29911.57,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 8",
-      "price": 30360.31,
+      "price": 30375.64,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 9",
-      "price": 29812.14,
+      "price": 29827.19,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 10",
-      "price": 29095.3,
+      "price": 29109.99,
       "major": false,
       "color": "#e74c3c"
     }
