@@ -1,78 +1,78 @@
 {
-  "generatedAt": "2026-09-23T17:15:30.706897+00:00",
-  "nqSpot": 30668.25,
-  "qqqSpot": 738.97,
-  "scale": 41.5013,
+  "generatedAt": "2026-09-23T17:30:27.739827+00:00",
+  "nqSpot": 30714.5,
+  "qqqSpot": 738.91,
+  "scale": 41.5673,
   "levels": [
     {
       "label": "Call Resistance 0DTE",
-      "price": 30794.0,
+      "price": 30759.81,
       "major": true,
       "color": "#3498db"
     },
     {
       "label": "Put Support 0DTE",
-      "price": 30711.0,
+      "price": 30759.81,
       "major": true,
       "color": "#e67e22"
     },
     {
       "label": "GEX 1",
-      "price": 30711.0,
+      "price": 30718.24,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 2",
-      "price": 30669.5,
+      "price": 30676.67,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 3",
-      "price": 30627.99,
+      "price": 30759.81,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 4",
-      "price": 30794.0,
+      "price": 30635.11,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     },
     {
       "label": "GEX 5",
-      "price": 30835.5,
+      "price": 30551.97,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     },
     {
       "label": "GEX 6",
-      "price": 30586.49,
+      "price": 30593.54,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 7",
-      "price": 30877.0,
+      "price": 30842.94,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 8",
-      "price": 30503.49,
+      "price": 30884.51,
       "major": false,
-      "color": "#e74c3c"
+      "color": "#2ecc71"
     },
     {
       "label": "GEX 9",
-      "price": 30544.99,
+      "price": 30510.41,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 10",
-      "price": 30752.5,
+      "price": 30967.65,
       "major": false,
       "color": "#2ecc71"
     }
