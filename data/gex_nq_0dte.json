@@ -1,84 +1,84 @@
 {
-  "generatedAt": "2026-09-24T21:00:27.096295+00:00",
-  "nqSpot": 30721.25,
+  "generatedAt": "2026-09-24T21:15:26.590733+00:00",
+  "nqSpot": 30736.25,
   "qqqSpot": 741.1,
-  "scale": 41.4536,
+  "scale": 41.4738,
   "levels": [
     {
       "label": "HVL 0DTE",
-      "price": 30486.73,
+      "price": 30501.62,
       "major": true,
       "color": "#f1c40f"
     },
     {
       "label": "Call Resistance 0DTE",
-      "price": 30717.11,
+      "price": 30732.1,
       "major": true,
       "color": "#3498db"
     },
     {
       "label": "Put Support 0DTE",
-      "price": 30509.84,
+      "price": 30524.73,
       "major": true,
       "color": "#e67e22"
     },
     {
       "label": "GEX 1",
-      "price": 30758.56,
+      "price": 30773.58,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 2",
-      "price": 30675.65,
+      "price": 30690.63,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 3",
-      "price": 30634.2,
+      "price": 30649.16,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 4",
-      "price": 30800.01,
+      "price": 30815.05,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 5",
-      "price": 30717.11,
+      "price": 30732.1,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 6",
-      "price": 30592.74,
+      "price": 30607.68,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 7",
-      "price": 30551.29,
+      "price": 30566.21,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 8",
-      "price": 30841.47,
+      "price": 30856.53,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 9",
-      "price": 30509.84,
+      "price": 30524.73,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 10",
-      "price": 30882.92,
+      "price": 30898.0,
       "major": false,
       "color": "#2ecc71"
     }
