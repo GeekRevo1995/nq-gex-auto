@@ -1,84 +1,84 @@
 {
-  "generatedAt": "2026-10-14T21:00:26.615993+00:00",
-  "nqSpot": 30133.75,
+  "generatedAt": "2026-10-14T21:15:23.346243+00:00",
+  "nqSpot": 30139.25,
   "qqqSpot": 728.95,
-  "scale": 41.3386,
+  "scale": 41.3461,
   "levels": [
     {
       "label": "HVL 0DTE",
-      "price": 30130.78,
+      "price": 30136.28,
       "major": true,
       "color": "#f1c40f"
     },
     {
       "label": "Call Resistance 0DTE",
-      "price": 30177.15,
+      "price": 30182.66,
       "major": true,
       "color": "#3498db"
     },
     {
       "label": "Put Support 0DTE",
-      "price": 30177.15,
+      "price": 30182.66,
       "major": true,
       "color": "#e67e22"
     },
     {
       "label": "GEX 1",
-      "price": 30135.82,
+      "price": 30141.32,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 2",
-      "price": 30177.15,
+      "price": 30182.66,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 3",
-      "price": 30094.48,
+      "price": 30099.97,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 4",
-      "price": 30053.14,
+      "price": 30058.62,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 5",
-      "price": 30218.49,
+      "price": 30224.01,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 6",
-      "price": 30011.8,
+      "price": 30017.28,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 7",
-      "price": 30259.83,
+      "price": 30265.36,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 8",
-      "price": 29970.46,
+      "price": 29975.93,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 9",
-      "price": 30383.85,
+      "price": 30389.39,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 10",
-      "price": 29929.12,
+      "price": 29934.59,
       "major": false,
       "color": "#e74c3c"
     }
