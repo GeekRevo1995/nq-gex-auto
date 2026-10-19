@@ -1,78 +1,78 @@
 {
-  "generatedAt": "2026-10-19T17:00:30.781160+00:00",
-  "nqSpot": 29819.5,
-  "qqqSpot": 720.0,
-  "scale": 41.416,
+  "generatedAt": "2026-10-19T17:15:30.344319+00:00",
+  "nqSpot": 29802.5,
+  "qqqSpot": 719.77,
+  "scale": 41.4056,
   "levels": [
     {
       "label": "Call Resistance 0DTE",
-      "price": 29902.33,
+      "price": 29894.83,
       "major": true,
       "color": "#3498db"
     },
     {
       "label": "Put Support 0DTE",
-      "price": 29819.5,
+      "price": 29812.02,
       "major": true,
       "color": "#e67e22"
     },
     {
       "label": "GEX 1",
-      "price": 29819.5,
+      "price": 29770.62,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 2",
-      "price": 29860.92,
+      "price": 29812.02,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 3",
-      "price": 29778.08,
+      "price": 29729.21,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 4",
-      "price": 29902.33,
+      "price": 30019.05,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 5",
-      "price": 29943.75,
-      "major": false,
-      "color": "#2ecc71"
-    },
-    {
-      "label": "GEX 6",
-      "price": 29736.67,
+      "price": 29853.43,
       "major": false,
       "color": "#e74c3c"
     },
     {
+      "label": "GEX 6",
+      "price": 29977.64,
+      "major": false,
+      "color": "#2ecc71"
+    },
+    {
       "label": "GEX 7",
-      "price": 29985.16,
+      "price": 29936.24,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 8",
-      "price": 30026.58,
-      "major": false,
-      "color": "#2ecc71"
-    },
-    {
-      "label": "GEX 9",
-      "price": 29695.25,
+      "price": 29687.81,
       "major": false,
       "color": "#e74c3c"
     },
     {
+      "label": "GEX 9",
+      "price": 29894.83,
+      "major": false,
+      "color": "#2ecc71"
+    },
+    {
       "label": "GEX 10",
-      "price": 30068.0,
+      "price": 30060.46,
       "major": false,
       "color": "#2ecc71"
     }
