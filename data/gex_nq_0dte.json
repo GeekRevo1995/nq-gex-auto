@@ -1,84 +1,84 @@
 {
-  "generatedAt": "2026-10-21T17:30:27.099722+00:00",
-  "nqSpot": 30107.25,
-  "qqqSpot": 727.28,
-  "scale": 41.3971,
+  "generatedAt": "2026-10-21T17:45:28.753556+00:00",
+  "nqSpot": 30060.0,
+  "qqqSpot": 726.83,
+  "scale": 41.3577,
   "levels": [
     {
       "label": "HVL 0DTE",
-      "price": 22353.36,
+      "price": 29990.3,
       "major": true,
       "color": "#f1c40f"
     },
     {
       "label": "Call Resistance 0DTE",
-      "price": 30012.86,
+      "price": 29984.31,
       "major": true,
       "color": "#3498db"
     },
     {
       "label": "Put Support 0DTE",
-      "price": 29805.88,
+      "price": 29777.53,
       "major": true,
       "color": "#e67e22"
     },
     {
       "label": "GEX 1",
-      "price": 30137.05,
+      "price": 30108.39,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 2",
-      "price": 30095.66,
+      "price": 30067.03,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 3",
-      "price": 30054.26,
+      "price": 30191.1,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 4",
-      "price": 30219.85,
+      "price": 30149.75,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 5",
-      "price": 30012.86,
+      "price": 30025.67,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 6",
-      "price": 30178.45,
+      "price": 29984.31,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 7",
-      "price": 29971.47,
+      "price": 29777.53,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     },
     {
       "label": "GEX 8",
-      "price": 29930.07,
+      "price": 30232.46,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 9",
-      "price": 29805.88,
+      "price": 29818.88,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 10",
-      "price": 30261.25,
+      "price": 29901.6,
       "major": false,
       "color": "#2ecc71"
     }
