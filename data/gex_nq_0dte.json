@@ -1,84 +1,84 @@
 {
-  "generatedAt": "2026-10-27T19:30:30.619290+00:00",
-  "nqSpot": 29828.5,
-  "qqqSpot": 721.54,
-  "scale": 41.3401,
+  "generatedAt": "2026-10-27T19:45:23.888573+00:00",
+  "nqSpot": 29868.0,
+  "qqqSpot": 722.79,
+  "scale": 41.3232,
   "levels": [
     {
       "label": "HVL 0DTE",
-      "price": 29551.76,
+      "price": 29860.83,
       "major": true,
       "color": "#f1c40f"
     },
     {
       "label": "Call Resistance 0DTE",
-      "price": 29806.18,
+      "price": 29835.36,
       "major": true,
       "color": "#3498db"
     },
     {
       "label": "Put Support 0DTE",
-      "price": 29764.84,
+      "price": 29752.71,
       "major": true,
       "color": "#e67e22"
     },
     {
       "label": "GEX 1",
-      "price": 29888.86,
+      "price": 29876.68,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 2",
-      "price": 29847.52,
+      "price": 29794.03,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     },
     {
       "label": "GEX 3",
-      "price": 29806.18,
+      "price": 29752.71,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 4",
-      "price": 29764.84,
+      "price": 29835.36,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 5",
-      "price": 29930.2,
+      "price": 29918.0,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 6",
-      "price": 29640.82,
+      "price": 29711.39,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     },
     {
       "label": "GEX 7",
-      "price": 29682.16,
+      "price": 29959.33,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 8",
-      "price": 29971.54,
+      "price": 29670.06,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     },
     {
       "label": "GEX 9",
-      "price": 29599.48,
+      "price": 29628.74,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     },
     {
       "label": "GEX 10",
-      "price": 29558.14,
+      "price": 30041.97,
       "major": false,
       "color": "#2ecc71"
     }
