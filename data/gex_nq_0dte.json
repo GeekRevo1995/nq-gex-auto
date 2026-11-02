@@ -1,80 +1,80 @@
 {
-  "generatedAt": "2026-11-02T21:00:30.421610+00:00",
-  "nqSpot": 28156.0,
+  "generatedAt": "2026-11-02T21:15:20.721429+00:00",
+  "nqSpot": 28201.75,
   "qqqSpot": 681.09,
-  "scale": 41.3396,
+  "scale": 41.4068,
   "levels": [
     {
       "label": "Call Resistance 0DTE",
-      "price": 28937.73,
+      "price": 28984.75,
       "major": true,
       "color": "#3498db"
     },
     {
       "label": "Put Support 0DTE",
-      "price": 28524.33,
+      "price": 28570.68,
       "major": true,
       "color": "#e67e22"
     },
     {
       "label": "GEX 1",
-      "price": 28110.94,
+      "price": 28156.62,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 2",
-      "price": 28234.96,
+      "price": 28239.43,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 3",
-      "price": 28193.62,
+      "price": 28280.84,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 4",
-      "price": 28276.3,
+      "price": 28363.65,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 5",
-      "price": 28152.28,
+      "price": 28322.24,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 6",
-      "price": 28317.64,
+      "price": 28198.02,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 7",
-      "price": 28358.98,
+      "price": 28115.21,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     },
     {
       "label": "GEX 8",
-      "price": 28069.6,
+      "price": 28446.46,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 9",
-      "price": 28400.32,
+      "price": 28405.06,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     },
     {
       "label": "GEX 10",
-      "price": 28441.66,
+      "price": 28529.28,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     }
   ]
 }
