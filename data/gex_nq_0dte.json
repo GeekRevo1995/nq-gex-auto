@@ -1,80 +1,80 @@
 {
-  "generatedAt": "2026-11-02T17:30:35.350538+00:00",
-  "nqSpot": 28638.25,
-  "qqqSpot": 691.64,
-  "scale": 41.4063,
+  "generatedAt": "2026-11-02T17:45:26.868779+00:00",
+  "nqSpot": 28562.0,
+  "qqqSpot": 690.04,
+  "scale": 41.3918,
   "levels": [
     {
       "label": "Call Resistance 0DTE",
-      "price": 28984.4,
+      "price": 28974.26,
       "major": true,
       "color": "#3498db"
     },
     {
       "label": "Put Support 0DTE",
-      "price": 28777.37,
+      "price": 28767.3,
       "major": true,
       "color": "#e67e22"
     },
     {
       "label": "GEX 1",
-      "price": 28653.15,
+      "price": 28560.35,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 2",
-      "price": 28570.34,
+      "price": 28601.74,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 3",
-      "price": 28777.37,
+      "price": 28767.3,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 4",
-      "price": 28611.75,
+      "price": 28725.91,
       "major": false,
-      "color": "#e74c3c"
+      "color": "#2ecc71"
     },
     {
       "label": "GEX 5",
-      "price": 28818.78,
+      "price": 28808.7,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 6",
-      "price": 28901.59,
+      "price": 28518.95,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     },
     {
       "label": "GEX 7",
-      "price": 28735.97,
+      "price": 28891.48,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 8",
-      "price": 28860.18,
+      "price": 28850.09,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 9",
-      "price": 28984.4,
+      "price": 28974.26,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 10",
-      "price": 28943.0,
+      "price": 28477.56,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     }
   ]
 }
