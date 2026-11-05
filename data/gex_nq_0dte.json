@@ -1,80 +1,80 @@
 {
-  "generatedAt": "2026-11-05T20:00:30.596053+00:00",
-  "nqSpot": 27136.25,
-  "qqqSpot": 656.28,
-  "scale": 41.3486,
+  "generatedAt": "2026-11-05T20:15:28.343718+00:00",
+  "nqSpot": 27001.0,
+  "qqqSpot": 651.25,
+  "scale": 41.4603,
   "levels": [
     {
       "label": "Call Resistance 0DTE",
-      "price": 27703.55,
+      "price": 27778.38,
       "major": true,
       "color": "#3498db"
     },
     {
       "label": "Put Support 0DTE",
-      "price": 26876.58,
+      "price": 26949.17,
       "major": true,
       "color": "#e67e22"
     },
     {
       "label": "GEX 1",
-      "price": 27083.32,
+      "price": 26949.17,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 2",
-      "price": 27290.07,
+      "price": 27363.78,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 3",
-      "price": 26876.58,
+      "price": 27571.08,
       "major": false,
-      "color": "#e74c3c"
+      "color": "#2ecc71"
     },
     {
       "label": "GEX 4",
-      "price": 27496.81,
+      "price": 27778.38,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 5",
-      "price": 27703.55,
+      "price": 27985.68,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 6",
-      "price": 27910.29,
+      "price": 28192.98,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 7",
-      "price": 28323.78,
+      "price": 28400.28,
       "major": false,
-      "color": "#e74c3c"
+      "color": "#2ecc71"
     },
     {
       "label": "GEX 8",
-      "price": 28117.04,
+      "price": 28607.59,
       "major": false,
-      "color": "#e74c3c"
+      "color": "#2ecc71"
     },
     {
       "label": "GEX 9",
-      "price": 28737.27,
+      "price": 29022.19,
       "major": false,
-      "color": "#e74c3c"
+      "color": "#2ecc71"
     },
     {
       "label": "GEX 10",
-      "price": 28530.52,
+      "price": 28814.89,
       "major": false,
-      "color": "#e74c3c"
+      "color": "#2ecc71"
     }
   ]
 }
