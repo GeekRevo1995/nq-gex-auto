@@ -1,78 +1,78 @@
 {
-  "generatedAt": "2026-11-16T19:00:23.501301+00:00",
-  "nqSpot": 27388.5,
-  "qqqSpot": 663.83,
-  "scale": 41.2583,
+  "generatedAt": "2026-11-16T19:15:42.544897+00:00",
+  "nqSpot": 27361.5,
+  "qqqSpot": 663.52,
+  "scale": 41.2369,
   "levels": [
     {
       "label": "Call Resistance 0DTE",
-      "price": 27643.06,
+      "price": 27628.71,
       "major": true,
       "color": "#3498db"
     },
     {
       "label": "Put Support 0DTE",
-      "price": 27436.77,
+      "price": 27422.53,
       "major": true,
       "color": "#e67e22"
     },
     {
       "label": "GEX 1",
-      "price": 27230.48,
+      "price": 27216.35,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 2",
-      "price": 27313.0,
+      "price": 27298.82,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 3",
-      "price": 27271.74,
+      "price": 27340.06,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 4",
-      "price": 27560.55,
+      "price": 27381.29,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     },
     {
       "label": "GEX 5",
-      "price": 27478.03,
+      "price": 27422.53,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     },
     {
       "label": "GEX 6",
-      "price": 27354.25,
+      "price": 27257.58,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 7",
-      "price": 27519.29,
+      "price": 27628.71,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 8",
-      "price": 27601.8,
+      "price": 27546.24,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 9",
-      "price": 27189.22,
+      "price": 27175.11,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 10",
-      "price": 27643.06,
+      "price": 27587.48,
       "major": false,
       "color": "#2ecc71"
     }
