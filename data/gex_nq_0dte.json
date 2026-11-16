@@ -1,78 +1,78 @@
 {
-  "generatedAt": "2026-11-16T21:15:26.305039+00:00",
-  "nqSpot": 27300.0,
+  "generatedAt": "2026-11-16T21:30:31.060887+00:00",
+  "nqSpot": 27302.25,
   "qqqSpot": 661.75,
-  "scale": 41.2543,
+  "scale": 41.2577,
   "levels": [
     {
       "label": "Call Resistance 0DTE",
-      "price": 27434.08,
+      "price": 27436.34,
       "major": true,
       "color": "#3498db"
     },
     {
       "label": "Put Support 0DTE",
-      "price": 27227.81,
+      "price": 27230.05,
       "major": true,
       "color": "#e67e22"
     },
     {
       "label": "GEX 1",
-      "price": 27227.81,
+      "price": 27312.56,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 2",
-      "price": 27269.06,
+      "price": 27271.31,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 3",
-      "price": 27310.31,
+      "price": 27353.82,
       "major": false,
-      "color": "#e74c3c"
+      "color": "#2ecc71"
     },
     {
       "label": "GEX 4",
-      "price": 27351.57,
+      "price": 27230.05,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 5",
-      "price": 27186.55,
+      "price": 27395.08,
       "major": false,
-      "color": "#e74c3c"
+      "color": "#2ecc71"
     },
     {
       "label": "GEX 6",
-      "price": 27145.3,
+      "price": 27436.34,
       "major": false,
-      "color": "#e74c3c"
+      "color": "#2ecc71"
     },
     {
       "label": "GEX 7",
-      "price": 27392.82,
+      "price": 27188.79,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 8",
-      "price": 27516.58,
+      "price": 27477.6,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 9",
-      "price": 27434.08,
+      "price": 27560.11,
       "major": false,
-      "color": "#e74c3c"
+      "color": "#2ecc71"
     },
     {
       "label": "GEX 10",
-      "price": 27475.33,
+      "price": 27518.85,
       "major": false,
       "color": "#e74c3c"
     }
