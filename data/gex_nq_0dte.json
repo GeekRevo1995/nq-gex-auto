@@ -1,80 +1,80 @@
 {
-  "generatedAt": "2026-11-20T15:00:33.822033+00:00",
-  "nqSpot": 26205.25,
-  "qqqSpot": 642.85,
-  "scale": 40.7639,
+  "generatedAt": "2026-11-20T15:15:36.434409+00:00",
+  "nqSpot": 26341.75,
+  "qqqSpot": 636.0,
+  "scale": 41.4178,
   "levels": [
     {
       "label": "Call Resistance 0DTE",
-      "price": 27719.42,
+      "price": 28164.14,
       "major": true,
       "color": "#3498db"
     },
     {
       "label": "Put Support 0DTE",
-      "price": 24458.32,
+      "price": 26507.42,
       "major": true,
       "color": "#e67e22"
     },
     {
       "label": "GEX 1",
-      "price": 25681.23,
+      "price": 26093.24,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 2",
-      "price": 25477.41,
+      "price": 26300.33,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 3",
-      "price": 26333.45,
+      "price": 25886.15,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     },
     {
       "label": "GEX 4",
-      "price": 25885.05,
+      "price": 26383.17,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 5",
-      "price": 25273.59,
+      "price": 26341.75,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 6",
-      "price": 27719.42,
+      "price": 26176.08,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 7",
-      "price": 26251.93,
+      "price": 26921.6,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 8",
-      "price": 25762.76,
+      "price": 26258.91,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 9",
-      "price": 26211.16,
+      "price": 26507.42,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 10",
-      "price": 26496.51,
+      "price": 26217.5,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     }
   ]
 }
