@@ -1,80 +1,80 @@
 {
-  "generatedAt": "2026-11-24T14:45:32.006171+00:00",
-  "nqSpot": 26260.0,
-  "qqqSpot": 640.5,
-  "scale": 40.9992,
+  "generatedAt": "2026-11-24T15:00:30.320202+00:00",
+  "nqSpot": 26436.5,
+  "qqqSpot": 641.94,
+  "scale": 41.1822,
   "levels": [
     {
       "label": "Call Resistance 0DTE",
-      "price": 27059.48,
+      "price": 27180.25,
       "major": true,
       "color": "#3498db"
     },
     {
       "label": "Put Support 0DTE",
-      "price": 22959.56,
+      "price": 26356.61,
       "major": true,
       "color": "#e67e22"
     },
     {
       "label": "GEX 1",
-      "price": 26239.5,
+      "price": 26150.7,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 2",
-      "price": 26034.5,
+      "price": 25944.78,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 3",
-      "price": 26280.5,
+      "price": 26562.52,
       "major": false,
-      "color": "#e74c3c"
+      "color": "#2ecc71"
     },
     {
       "label": "GEX 4",
-      "price": 25829.51,
+      "price": 26397.79,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 5",
-      "price": 26444.5,
+      "price": 26356.61,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 6",
-      "price": 26977.49,
+      "price": 26727.25,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 7",
-      "price": 26854.49,
+      "price": 26974.34,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 8",
-      "price": 25624.51,
+      "price": 26891.98,
       "major": false,
-      "color": "#e74c3c"
+      "color": "#2ecc71"
     },
     {
       "label": "GEX 9",
-      "price": 26649.49,
+      "price": 26191.88,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 10",
-      "price": 26608.49,
+      "price": 25738.87,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     }
   ]
 }
