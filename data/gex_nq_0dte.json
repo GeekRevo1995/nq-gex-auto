@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T18:30:26.142859+00:00",
+  "generatedAt": "2026-11-27T18:45:20.969215+00:00",
   "nqSpot": 26765.0,
   "qqqSpot": 650.99,
   "scale": 41.1143,
@@ -36,27 +36,27 @@
     },
     {
       "label": "GEX 3",
-      "price": 26518.73,
+      "price": 26559.84,
       "major": false,
       "color": "#2ecc71"
     },
     {
       "label": "GEX 4",
-      "price": 26724.3,
+      "price": 26600.95,
       "major": false,
-      "color": "#e74c3c"
+      "color": "#2ecc71"
     },
     {
       "label": "GEX 5",
-      "price": 26559.84,
+      "price": 26518.73,
       "major": false,
-      "color": "#e74c3c"
+      "color": "#2ecc71"
     },
     {
       "label": "GEX 6",
-      "price": 26313.15,
+      "price": 26724.3,
       "major": false,
-      "color": "#2ecc71"
+      "color": "#e74c3c"
     },
     {
       "label": "GEX 7",
@@ -72,13 +72,13 @@
     },
     {
       "label": "GEX 9",
-      "price": 26600.95,
+      "price": 26642.07,
       "major": false,
       "color": "#e74c3c"
     },
     {
       "label": "GEX 10",
-      "price": 26642.07,
+      "price": 26683.18,
       "major": false,
       "color": "#e74c3c"
     }
